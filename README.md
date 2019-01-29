@@ -1,2 +1,3 @@
 # Senior-Capstone-Project
-IOS 
+E-commerce with OU payment
+
