@@ -1,3 +1,9 @@
+<?php
+
+
+include ('conn.php');
+
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +15,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">
@@ -31,15 +38,99 @@
   </div>
 </nav>
 
+<div class="container">
 
 
+<div class="row ">
+	<div class="col text-center mt-3">
+		<img src="img/ou.png" width="80px" height="80px" alt="">
+	</div>
+	<div class="col-12 text-center m-1">
+		<p>Reset Login Password</p>
+	</div>
+
+	<div class="col-12 text-center">
+		<p>We have sent a confirmation email to your registered email address. Please follow the instruction in the mail to continue.</p>
+
+		<hr>
+	</div>
+
+
+
+	<div class="col-12 text-center">
+		<div class="col">
+		<h6>If you haven't received the email, please try the following:</h6>
+		<ul>
+		    <li>Check your spam or junk mail folders.</li>
+		    <li>Make sure your email client is functioning normally.</li>
+		   
+		</ul>
+		</div>
+	</div>
+
+
+<?php
+
+include 'email.php'; 
+
+  
+
+$email = stripslashes(trim($_POST['email']));
+
+$sql = "SELECT email FROM `user` WHERE `email` = :email";
+
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$stmt = $conn->prepare($sql);
+
+if($stmt->execute(['email' => $email])){
+
+	if($row = $stmt->fetch() > 0){
+
+
+		\EMAIL\sendEmail\sendEmail($email); 
+
+
+		
+		
+	}
+
+
+}
+
+
+//  $query = mysqli_query($conn,$sql);
+//  $row = mysqli_num_rows($query);
+ 
+// if($row){
+// 	$sql = "SELECT `PASS_TOKEN_EXPTIME`,  `PASS_TOKEN` FROM  `USERS` WHERE  `USER_EMAIL` =  '$email'";
+// 	$query = mysqli_query($conn,$sql);
+// 	$row = mysqli_fetch_assoc($query);
+// 	if($row['PASS_TOKEN'] == $token && $row['PASS_TOKEN_EXPTIME'] < time()+24*60*60){
+		
+// 		header('Location: reset.php');
+		
+	
+// 	}else{
+		
+// 	}
+	
+	
+// }else{
+	
+	
+
+
+// }
+  
+?>   
+
+</div>
 
 <!-- Footer -->
 <footer class="page-footer font-small stylish-color-dark pt-4 fixed-bottom">
 
-
     <hr>
-
     <!-- Social buttons -->
     <ul class="list-unstyled list-inline text-center">
       <li class="list-inline-item">
@@ -68,8 +159,7 @@
 
 </footer>
 <!-- Footer -->
+
 </body>
-
-
 
 </html>
