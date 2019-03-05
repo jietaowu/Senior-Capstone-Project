@@ -22,6 +22,28 @@ $email = test_input($email);
 $password = $_POST['password'];
 $password = md5(md5(test_input($password)));
 
+
+$id = $_POST['id'];
+$email = $_POST['email'];
+$password = $_POST['password'];
+$sql = mysql_query( "INSERT INTO user_date VALUE( '', '$email', '$password')" ) or die ( mysql_error() );
+echo 'insert successful';
+
+
+$sql = "INSERT INTO ou_ecommerce (firstname, lastname, email)
+VALUES ('John', 'Doe', 'john@example.com');";
+$sql = "INSERT INTO address (addrss id, country, firstName, lastName, city, state, zip, phoneNumber)
+VALUES ('John', 'Doe', 'john@example.com');";
+//$sql = "INSERT INTO ou_ecommerce (firstname, lastname, email)
+//VALUES ('John', 'Doe', 'john@example.com');";
+
+if ($conn->multi_query($sql) === TRUE) {
+    echo "New records created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+
 $sql = "SELECT email FROM `user` WHERE `email` = :email";
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $stmt = $conn->prepare($sql);
