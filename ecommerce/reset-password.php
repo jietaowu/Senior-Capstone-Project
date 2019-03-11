@@ -73,9 +73,11 @@ include ('conn.php');
 
 include 'email.php'; 
 
-  
+
 
 $email = stripslashes(trim($_POST['email']));
+
+
 
 $sql = "SELECT email FROM `user` WHERE `email` = :email";
 
