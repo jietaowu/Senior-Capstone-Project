@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<style type="text/css">
+
+#preview-container {
+    margin: 50px auto;
+    padding: 40px;
+    border: 1px solid #cccccc;
+    border-radius: 2px;
+}
+
+#upload-dialog {
+    padding: 5px;
+    border: 1px solid #336699;
+    background-color: white;
+    color: #336699;
+    background: none;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#image-file {
+    display: none;
+}
+
+#preview-image {
+    display: none;
+    vertical-align: middle;
+    width: 80px;
+    border: 1px solid rgba(0,0,0,0.01);
+    border-radius: 2px;
+}
+
+#image-name {
+    display: none;
+    vertical-align: middle;
+    color: #336699;
+    margin: 0 15px;
+}
+
+#upload-button {
+    padding: 5px;
+    border: 1px solid #336699;
+    background-color: #336699;
+    color: white;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    display: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#cancel-image {
+    display: none;
+    vertical-align: middle;
+    padding: 0px;
+    border: none;
+    color: #777777;
+    background-color: white;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0 0 0 15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="preview-container">
+    <button id="upload-dialog">Choose Image</button>
+    <input type="file" id="image-file" name="image" accept="image/jpg,image/png" />
+    <img id="preview-image" />
+    <span id="image-name"></span>
+    <button id="upload-button">Upload</button>
+    <button id="cancel-image">Cancel</button>
+</div>
+
+<script>
+
+var _PREVIEW_URL;
+
+/* Show Select File dialog */
+document.querySelector("#upload-dialog").addEventListener('click', function() {
+    document.querySelector("#image-file").click();
+});
+
+/* Selected File has changed */
+document.querySelector("#image-file").addEventListener('change', function() {
+    // user selected file
+    var file = this.files[0];
+
+    // allowed MIME types
+    var mime_types = [ 'image/jpeg', 'image/png' ];
+    
+    // validate MIME
+    if(mime_types.indexOf(file.type) == -1) {
+        alert('Error : Incorrect file type');
+        return;
+    }
+
+    // validate file size
+    if(file.size > 2*1024*1024) {
+        alert('Error : Exceeded size 2MB');
+        return;
+    }
+
+    // validation is successful
+
+    // hide upload dialog button
+    document.querySelector("#upload-dialog").style.display = 'none';
+    
+    // set name of the file
+    document.querySelector("#image-name").innerText = file.name;
+    document.querySelector("#image-name").style.display = 'inline-block';
+
+    // local url
+    _PREVIEW_URL = URL.createObjectURL(file);
+
+    // set src of image and show
+    document.querySelector("#preview-image").setAttribute('src', _PREVIEW_URL);
+    document.querySelector("#preview-image").style.display = 'inline-block';
+
+    
+    // show cancel and upload buttons now
+    document.querySelector("#cancel-image").style.display = 'inline-block';
+    document.querySelector("#upload-button").style.display = 'inline-block';
+});
+
+/* Reset file input */
+document.querySelector("#cancel-image").addEventListener('click', function() {
+    // destroy previous local url
+    URL.revokeObjectURL(_PREVIEW_URL);
+
+    // show upload dialog button
+    document.querySelector("#upload-dialog").style.display = 'inline-block';
+
+    // reset to no selection
+    document.querySelector("#image-file").value = '';
+
+    // hide elements that are not required
+    document.querySelector("#image-name").style.display = 'none';
+    document.querySelector("#preview-image").style.display = 'none';
+    document.querySelector("#cancel-image").style.display = 'none';
+    document.querySelector("#upload-button").style.display = 'none';
+});
+
+/* Upload file to server */
+document.querySelector("#upload-button").addEventListener('click', function() {
+    // AJAX request to server
+    alert('This will upload file to server');
+});
+
+</script>
+
+</body>
+</html>
